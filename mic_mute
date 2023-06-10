@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Check if the microphone is currently muted
+mute_status=$(pactl list sources | awk '/Mute:/ {print $2}' | sed -n '2p')
+
+if [ $mute_status = "no" ]; then
+  # Microphone is currently unmuted, so mute it
+  pactl set-source-mute @DEFAULT_SOURCE@ 1
+  notify-send "Microphone Muted"
+else
+  # Microphone is currently muted, so unmute it
+  pactl set-source-mute @DEFAULT_SOURCE@ 0
+  notify-send "Microphone Unmuted"
+fi
